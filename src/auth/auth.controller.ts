@@ -15,9 +15,14 @@ export class AuthController {
   constructor(private userService: UsersService) {}
 
   @Post('/signup')
-  async addUser(@Req() req, @Body() createUserDto: CreateUserDto) {
+  async addUser(
+    @Req() req,
+    @Res() res: Response,
+    @Body() createUserDto: CreateUserDto,
+  ) {
     const newUser = await this.userService.create(createUserDto);
     console.log(newUser);
+    res.redirect('http://localhost:3001/dashboard');
   }
 
   @Post('/signin')
@@ -29,6 +34,8 @@ export class AuthController {
     console.log(authValid, 'auth');
     if (authValid === false) {
       throw new BadRequestException('Invalid credentials');
+    } else {
+      response.redirect('http://localhost:3001/dashboard');
     }
 
     console.log(authValid);
@@ -37,6 +44,7 @@ export class AuthController {
       expires: new Date(Date.now() + 900000),
       httpOnly: true,
     });
+
     return true;
   }
 }
