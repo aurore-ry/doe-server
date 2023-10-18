@@ -17,6 +17,7 @@ model User {
   displayName    String?
   email          String       @unique
   password       String
+  salt           String       @default("")
   emailConfirmed Boolean      @default(false)
   profile        UserProfile?
 

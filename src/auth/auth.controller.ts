@@ -1,15 +1,42 @@
-import { Body, Controller, Post, Req } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Post,
+  Req,
+  Res,
+} from '@nestjs/common';
+import { Response } from 'express';
 import { UsersService } from 'src/users/users.service';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { CreateUserDto } from 'src/users/users.user.dto';
+import { CreateUserDto, LoginUserDto } from 'src/users/users.user.dto';
 
 @Controller('auth')
 export class AuthController {
   constructor(private userService: UsersService) {}
 
   @Post('/signup')
-  async addUser(@Req() req, @Body() CreateUserDto: CreateUserDto) {
-    const newUser = await this.userService.create(CreateUserDto);
+  async addUser(@Req() req, @Body() createUserDto: CreateUserDto) {
+    const newUser = await this.userService.create(createUserDto);
     console.log(newUser);
+  }
+
+  @Post('/signin')
+  async connectUser(
+    @Res({ passthrough: true }) response: Response,
+    @Body() loginUserDto: LoginUserDto,
+  ) {
+    const authValid = await this.userService.login(loginUserDto);
+    console.log(authValid, 'auth');
+    if (authValid === false) {
+      throw new BadRequestException('Invalid credentials');
+    }
+
+    console.log(authValid);
+
+    response.cookie('rememberme', '1', {
+      expires: new Date(Date.now() + 900000),
+      httpOnly: true,
+    });
+    return true;
   }
 }
