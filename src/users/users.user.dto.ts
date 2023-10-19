@@ -25,13 +25,29 @@ export class CreateUserDto {
   @IsNotEmpty()
   @ApiProperty()
   username: string;
-  @IsStrongPassword()
+  @IsStrongPassword({
+    minLength: 8,
+    minLowercase: 1,
+    minNumbers: 1,
+    minSymbols: 1,
+    minUppercase: 1,
+  })
   @ApiProperty()
   @IsNotEmpty()
   password: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  readonly passwordConfirm: string;
 }
 export class UpdatePasswordDto {
-  @IsStrongPassword()
+  @IsStrongPassword({
+    minLength: 8,
+    minLowercase: 1,
+    minNumbers: 1,
+    minSymbols: 1,
+    minUppercase: 1,
+  })
   @IsNotEmpty()
   @ApiProperty()
   new_password: string;

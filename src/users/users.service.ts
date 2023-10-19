@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   HttpException,
   HttpStatus,
   Injectable,
@@ -28,6 +29,13 @@ export class UsersService {
     if (checkIfUserAlreadyExist) {
       throw new HttpException('user_already_exist', HttpStatus.CONFLICT);
     }
+
+    if (userDto.password !== userDto.passwordConfirm) {
+      throw new BadRequestException(
+        'Password and Confirmation Password must match',
+      );
+    }
+
     const salt = await genSalt(10);
     const password = await hash(userDto.password, salt);
     return this.prisma.user.create({
