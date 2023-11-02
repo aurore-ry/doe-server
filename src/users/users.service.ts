@@ -48,20 +48,39 @@ export class UsersService {
     });
   }
 
-  async login(userDto: LoginUserDto): Promise<boolean> {
+  async login(userDto: LoginUserDto): Promise<null | User> {
     const user = await this.prisma.user.findUnique({
       where: {
         username: userDto.username,
       },
     });
 
-    console.log('b');
-
     if (!user) {
       throw new NotFoundException(
         `Not user found for username: ${userDto.username}`,
       );
     }
-    return compare(userDto.password, user.password);
+
+    if (compare(userDto.password, user.password)) {
+      return user;
+    }
+
+    return null;
+  }
+
+  async getUser(username: string): Promise<User> {
+    return this.prisma.user.findUnique({
+      where: {
+        username,
+      },
+    });
+  }
+
+  async getUserById(userId: string): Promise<User> {
+    return this.prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
   }
 }

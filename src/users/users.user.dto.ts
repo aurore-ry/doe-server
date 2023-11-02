@@ -6,15 +6,6 @@ import {
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class LoginUserDto {
-  @ApiProperty()
-  @IsNotEmpty()
-  readonly username: string;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  readonly password: string;
-}
 export class CreateUserDto {
   @IsAlphanumeric()
   @IsEmail()
@@ -35,11 +26,20 @@ export class CreateUserDto {
   @ApiProperty()
   @IsNotEmpty()
   password: string;
-
   @ApiProperty()
   @IsNotEmpty()
   readonly passwordConfirm: string;
 }
+
+export class LoginUserDto {
+  @ApiProperty()
+  @IsNotEmpty()
+  readonly username: string;
+  @ApiProperty()
+  @IsNotEmpty()
+  readonly password: string;
+}
+
 export class UpdatePasswordDto {
   @IsStrongPassword({
     minLength: 8,
