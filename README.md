@@ -8,7 +8,7 @@ Doe server is the api of Doe Society forum :)
 - docker
 - nest JS
   - Swagger
-  - Express
+  - Fastify
   - Passeport
 - TypeScript
 - bcrypt
