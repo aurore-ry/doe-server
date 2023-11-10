@@ -14,6 +14,7 @@ import { CreateUserDto, LoginUserDto } from 'src/users/users.user.dto';
 export class AuthController {
   constructor(private userService: UsersService) {}
   myCookie = process.env.COOKIE_NAME;
+
   @Post('/signup')
   async addUser(
     @Req() reply: FastifyReply,

@@ -19,14 +19,16 @@ model User {
   password       String
   salt           String       @default("")
   emailConfirmed Boolean      @default(false)
-  profile        UserProfile?
+  profile        UserProfile? @relation(fields: [profileId], references: [id])
+  profileId  String? @unique
+
 
   @@map("user")
 }
 
 model UserProfile {
-  user     User      @relation(fields: [id], references: [id])
   id       String    @unique
+  user     User?
   posts    Post[]
   comments Comment[]
 }
